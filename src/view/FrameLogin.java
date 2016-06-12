@@ -5,6 +5,10 @@
  */
 package view;
 
+import com.sun.scenario.effect.impl.prism.sw.PSWDrawable;
+import javax.swing.JOptionPane;
+import jdk.nashorn.internal.runtime.regexp.RegExp;
+import jdk.nashorn.internal.runtime.regexp.RegExpMatcher;
 import model.AccessUser;
 import model.EntityUser;
 import tools.DBHelper;
@@ -38,11 +42,15 @@ public class FrameLogin extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jButton1 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         txt_emailPsw = new javax.swing.JPasswordField();
         txt_emailAddr = new javax.swing.JTextField();
         btn_login = new javax.swing.JButton();
+        btn_clr = new javax.swing.JButton();
+
+        jButton1.setText("jButton1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -50,14 +58,18 @@ public class FrameLogin extends javax.swing.JFrame {
 
         jLabel2.setText("登陆密码：");
 
-        txt_emailPsw.setText("jPasswordField1");
-
-        txt_emailAddr.setText("jTextField1");
-
         btn_login.setText("记住并登陆");
         btn_login.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_loginActionPerformed(evt);
+            }
+        });
+
+        btn_clr.setText("清除");
+        btn_clr.setToolTipText("");
+        btn_clr.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_clrActionPerformed(evt);
             }
         });
 
@@ -73,7 +85,9 @@ public class FrameLogin extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(txt_emailAddr))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel2)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btn_clr, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(btn_login, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -92,7 +106,9 @@ public class FrameLogin extends javax.swing.JFrame {
                     .addComponent(jLabel2)
                     .addComponent(txt_emailPsw, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(36, 36, 36)
-                .addComponent(btn_login)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btn_login)
+                    .addComponent(btn_clr))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -101,13 +117,29 @@ public class FrameLogin extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_loginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_loginActionPerformed
-        //保存用户信息
-        AccessUser.saveUser(new EntityUser(Boolean.TRUE, txt_emailAddr.getText(), txt_emailPsw.getPassword().toString()));
-        //打开主窗体并关闭登陆窗体
-        FrameMain frameMain = new FrameMain();
-        frameMain.setVisible(true);
-        this.setVisible(false);
+        String addr = txt_emailAddr.getText().trim();
+        String psw = txt_emailPsw.getPassword().toString().trim();
+
+        if (addr.isEmpty() || psw.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "请输入帐号和密码!");
+        } else if (addr.indexOf("@") == -1) {
+            JOptionPane.showMessageDialog(this, "请正确的邮箱地址!");
+        } else {
+            //保存用户信息
+            AccessUser.saveUser(new EntityUser(Boolean.TRUE, addr, psw));
+            //打开主窗体并关闭登陆窗体
+            this.setVisible(Boolean.FALSE);
+            FrameMain frameMain = new FrameMain();
+            frameMain.setVisible(Boolean.TRUE);
+
+        }
+
     }//GEN-LAST:event_btn_loginActionPerformed
+
+    private void btn_clrActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_clrActionPerformed
+        txt_emailAddr.setText("");
+        txt_emailPsw.setText("");
+    }//GEN-LAST:event_btn_clrActionPerformed
 
     /**
      * @param args the command line arguments
@@ -145,7 +177,9 @@ public class FrameLogin extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btn_clr;
     private javax.swing.JButton btn_login;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JTextField txt_emailAddr;
