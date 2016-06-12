@@ -5,8 +5,17 @@
  */
 package emailclientcn;
 
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+import javax.swing.JLabel;
+import model.AccessUser;
+import model.EntityUser;
+import tools.DBHelper;
+import tools.json.JSONObject;
 import view.FrameLogin;
-
+import view.FrameMain;
 
 /**
  *
@@ -18,10 +27,9 @@ public class EmailClientCN {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
-        //打开主窗体并关闭登陆窗体
+        //打开登陆窗体
         FrameLogin frameLogin = new FrameLogin();
         frameLogin.setVisible(true);
     }
-    
+
 }
